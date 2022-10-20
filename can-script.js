@@ -1,4 +1,4 @@
-// create a variable to store the products 'database' in
+// Créé une variable contenant les noms des produits dans la base de donnée
 var products;
 
 // use fetch to retrieve it, and report any errors that occur in the fetch operation
@@ -23,19 +23,18 @@ function initialize() {
   var searchBtn = document.querySelector('button');
   var main = document.querySelector('main');
 
-  // keep a record of what the last category and search term entered were
+  // garder un enregistrement de la derniére catégorie et la recherche ayant été taper dans la barre
   var lastCategory = category.value;
-  // no search has been made yet
+  // Aucune recherche n'a encore été faite
   var lastSearch = '';
 
-  // these contain the results of filtering by category, and search term
-  // finalGroup will contain the products that need to be displayed after
-  // the searching has been done. Each will be an array containing objects.
-  // Each object will represent a product
+  // categoryGroup contient les resultats filtré dans la recherche selon les termes saisis
+  // finalGroup contient les produits devant être affiché à la fin.
+
   var categoryGroup;
   var finalGroup;
 
-  // To start with, set finalGroup to equal the entire products database
+  // finalGroup sera égal à products initiallement
   // then run updateDisplay(), so ALL products are displayed initially.
   finalGroup = products;
   updateDisplay();
@@ -93,8 +92,7 @@ function initialize() {
     }
   }
 
-  // selectProducts() Takes the group of products selected by selectCategory(), and further
-  // filters them by the tnered search term (if one has bene entered)
+  // selectProducts() Permet de filtrer les résultats selon les données saisis dans la barre de recherche
   function selectProducts() {
     // If no search term has been entered, just make the finalGroup array equal to the categoryGroup
     // array — we don't want to filter the products further — then run updateDisplay().
@@ -102,32 +100,26 @@ function initialize() {
       finalGroup = categoryGroup;
       updateDisplay();
     } else {
-      // Make sure the search term is converted to lower case before comparison. We've kept the
-      // product names all lower case to keep things simple
+      // Adapte automatiquement les résultats saisis en minuscule.
       var lowerCaseSearchTerm = searchTerm.value.trim().toLowerCase();
-      // For each product in categoryGroup, see if the search term is contained inside the product name
-      // (if the indexOf() result doesn't return -1, it means it is) — if it is, then push the product
-      // onto the finalGroup array
-      for (var i = 0; i < categoryGroup.length; i++) {
+      // Donne les résultats de la recherche en excluant les produits ne correspondants pas à la recherche
         if (categoryGroup[i].name.indexOf(lowerCaseSearchTerm) !== -1) {
           finalGroup.push(categoryGroup[i]);
         }
       }
-
-      // run updateDisplay() after this second round of filtering has been done
+      // mets à jour le résultats final
       updateDisplay();
     }
 
   }
 
-  // start the process of updating the display with the new set of products
+  // Permet de commencer à mettre à jour vers une nouvelle page de produits, tandis que le précedent contenu est supprimé
   function updateDisplay() {
-    // remove the previous contents of the <main> element
     while (main.firstChild) {
       main.removeChild(main.firstChild);
     }
 
-    // if no products match the search term, display a "No results to display" message
+    // Si aucun résultat ne correspond à la recherche, on marquera 'No results to display!'
     if (finalGroup.length === 0) {
       var para = document.createElement('p');
       para.textContent = 'No results to display!';
@@ -135,36 +127,34 @@ function initialize() {
       // for each product we want to display, pass its product object to fetchBlob()
     } else {
       for (var i = 0; i < finalGroup.length; i++) {
-        fetchBlob(finalGroup[i]);
+        showProduct(finalGroup[i]);
       }
     }
   }
 
-  // fetchBlob uses fetch to retrieve the image for that product, and then sends the
+  // fetchBlob utilise fetch to retrieve the image for that product, and then sends the
   // resulting image display URL and product object on to showProduct() to finally
   // display it
-  function fetchBlob(product) {
-    // construct the URL path to the image file from the product.image property
-    var url = 'images/' + product.image;
-    // Use fetch to fetch the image, and convert the resulting response to a blob
-    // Again, if any errors occur we report them in the console.
-    fetch(url).then(function (response) {
-      if (response.ok) {
-        response.blob().then(function (blob) {
-          // Convert the blob to an object URL — this is basically an temporary internal URL
-          // that points to an object stored inside the browser
-          var objectURL = URL.createObjectURL(blob);
-          // invoke showProduct
-          showProduct(objectURL, product);
-        });
-      } else {
-        console.log('Network request for "' + product.name + '" image failed with response ' + response.status + ': ' + response.statusText);
-      }
-    });
-  }
+  // function fetchBlob(product) {
+  //   // Construit le chemin reliant l'URL au fichier image provenant de product.image
+  //   var url = 'images/' + product.image;
+  //   // Utiliser fetch pour aller chercher l'image, et convertir l'image en Blob
+  //   fetch(url).then(function (response) {
+  //     if (response.ok) {
+  //       response.blob().then(function (blob) {
+  //         // Convertit le Blob en objet URL
+  //         var objectURL = URL.createObjectURL(blob);
+  //         // invoque showProduct
+  //         showProduct(objectURL, product);
+  //       });
+  //     } else {
+  //       console.log('Network request for "' + product.name + '" image failed with response ' + response.status + ': ' + response.statusText);
+  //     }
+  //   });
+  // }
 
   // Display a product inside the <main> element
-  function showProduct(objectURL, product) {
+  function showProduct(product) {
     // create <section>, <h2>, <p>, and <img> elements
     var section = document.createElement('section');
     var heading = document.createElement('h2');
@@ -184,7 +174,7 @@ function initialize() {
     para.textContent = '$' + product.price.toFixed(2);
 
     // Set the src of the <img> element to the ObjectURL, and the alt to the product "name" property
-    image.src = objectURL;
+    image.src = "images/"+product.image;
     image.alt = product.name;
 
     // append the elements to the DOM as appropriate, to add the product to the UI
@@ -193,4 +183,3 @@ function initialize() {
     section.appendChild(para);
     section.appendChild(image);
   }
-}
