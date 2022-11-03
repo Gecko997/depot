@@ -74,6 +74,8 @@ function showProduct(finalGroup) {
       section.setAttribute('class', product.type);
       section.classList.add("card");
       section.classList.add("text-center");
+      section.classList.add("mx-3")
+      
       var heading = document.createElement('div');
       heading.textContent = product.nom.replace(product.nom.charAt(0), product.nom.charAt(0).toUpperCase());
       heading.className = 'card-title'; 

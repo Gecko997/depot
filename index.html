@@ -17,7 +17,7 @@
   <nav class="navbar" style="background-color:rgb(199, 218, 32)">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
-        <img src="icons/bean_can.png" alt="logo" width="30" height="24" class="d-inline-block align-text-top">Le jardin en boite</a>
+        <img src="icons/bean_can.png" alt="logo" width="30" height="30" class="d-inline-block align-text-top">   Le jardin en boite de Guillaume</a>
       <form class="d-flex" role="choix" name="choix">
 
           <div class="input-group">
@@ -42,18 +42,29 @@
               <option value="E">E</option>
               <option value="F">F</option>
             </select>
-          </div>         
-              <input class="form-control me-2" type="text" id="searchTerm" placeholder="Soupe, haricots,..." aria-label="Soupe de carottes">                   
-              <button class="btn btn-outline-success" type="submit">Voir le résultat</button>
+          </div> 
+            <form action="/action_page.php" autocomplete="on">      
+              <input class="form-control me-2"  type="text" id="searchTerm" placeholder="Soupe, haricots,..." aria-label="Soupe de carottes">                                 
+              <button class="btn btn-outline-success mx-3" style="width: 500px;" type="submit">Voir le résultat</button> 
+            </form>
+              
+              <button type="button" class="btn btn-primary position-relative">
+                Panier
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  99+
+                  <span class="visually-hidden">unread messages</span>
+                </span>
+              </button>
+          </div>
           <div>
             
           </div>
-        
+          
       </form>
     </div>
   </nav>
   
-    <main class="row row-cols-1 row-cols-md-4 g-4">
+    <main class="row cols-8 row-cols-md-5 g-4">
 
     </main>
   
